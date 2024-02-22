@@ -1,4 +1,4 @@
-// ELEMENTS
+// <--- ELEMENTS --->
 const prevCityBtn = document.getElementById('prev-city-btn');
 const nextCityBtn = document.getElementById('next-city-btn');
 const openModalBtn = document.getElementById('openModalBtn');
@@ -8,22 +8,10 @@ const errorSpan = document.getElementById('errorSpan');
 
 const cities = ['Birmingham', 'Mount Vernon', 'Houston', 'Miami', 'Springfield', 'Seattle', 'Concord', 'New Bedford', 'Minneapolis', 'Loveland'];
 
-// Scripts
-
 let currentCityIndex = 0;
 let populationChart;
 
-function openModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'block';
-}
-
-function closeModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'none';
-}
-
-// DOM Events
+// <--- DOM EVENTS --->
 document.addEventListener('DOMContentLoaded', () => {
     // Calling displayCityData after the DOM is completely loaded
     displayCityData(cities[currentCityIndex]);
@@ -58,9 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
     addCityBtn.addEventListener('click', addNewCity);
 });
 
+// <--- FUNCTIONS --->
+function openModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+}
+
 // Calling drawPopulationChart as an empty object
 drawPopulationChart([]);
 
+// Add City
 async function addNewCity() {
     // Obtain input value
     const newCityInput = document.getElementById('newCityInput');
@@ -113,7 +113,7 @@ function updatePopulationChart() {
     });
 }
 
-
+// City data fetching from Api
 async function fetchCityData(city) {
     // Fetching city data from an API
     const response = await fetch(`https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-cities-demographics&q=${city}&facet=city&refine.city=${city}`);
@@ -140,6 +140,7 @@ async function fetchCityData(city) {
     }
 }
 
+// City Image fetch
 async function getCityImage(cityName) {
     const ACCESS_KEY = '7wGUEcr9xLl_mB1YIk7QqIB0kIyF_cdyIR0Nif-WMbw';
     const unsplashApiUrl = `https://api.unsplash.com/photos/random?query=${cityName}&client_id=${ACCESS_KEY}`;
@@ -162,6 +163,7 @@ async function getCityImage(cityName) {
     }
 }
 
+// Data Display
 async function displayCityData(cityName) {
     try {
         const cityData = await fetchCityData(cityName);
