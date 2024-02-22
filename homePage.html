@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>City Data</title>
     <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/modalStyles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -27,8 +29,16 @@
         <div class="button-container">
             <button id="prev-city-btn">Previous City</button>
             <button id="next-city-btn">Next City</button>
+            <button id="openModalBtn">Population Comparison</button>
         </div>
     </main>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Population Comparison</h2>
+            <canvas id="populationChart"></canvas>
+        </div>
+    </div>
     <script src="/js/scripts.js"></script>
 </body>
 

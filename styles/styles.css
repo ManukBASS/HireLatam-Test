@@ -36,7 +36,6 @@ section {
 .button-container {
     margin-top: 1rem;
     display: flex;
-    align-items: center;
     gap: 1rem;
 
     button {
@@ -63,6 +62,18 @@ section {
     }
 }
 
+#myModal .modal-content {
+    width: 300px;
+    max-width: 100%;
+    padding: 1rem;
+}
+
+canvas {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
 @media screen and (max-width: 768px) {
     section {
         flex-direction: column;
@@ -75,8 +86,21 @@ section {
     }
 
     .button-container {
+        flex-direction: column;
+
         button {
-            width: 6rem;
+            width: 100%;
         }
+    }
+
+    #myModal .modal-content {
+        width: 270px;
+        max-width: 100%;
+    }
+
+    canvas {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
     }
 }

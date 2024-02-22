@@ -1,9 +1,12 @@
 const prevCityBtn = document.getElementById('prev-city-btn');
 const nextCityBtn = document.getElementById('next-city-btn');
+const openModalBtn = document.getElementById('openModalBtn');
+const closeModalBtn = document.getElementById('closeModal');
 
 const cities = ['Mount Vernon', 'Birmingham', 'Houston', 'Miami', 'Springfield', 'Seattle', 'Concord', 'New Bedford', 'Minneapolis', 'Loveland'];
 
 let currentCityIndex = 0;
+let populationChart;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Calling displayCityData after the DOM is completely loaded
@@ -20,7 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
             displayCityData(cities[currentCityIndex + 1]);
         }
     });
+
+    openModalBtn.addEventListener('click', async () => {
+        // Al hacer clic, primero se obtienen los datos de población y luego se dibuja el gráfico
+        const populationData = [];
+        for (const city of cities) {
+            const cityData = await fetchCityData(city);
+            populationData.push({ label: city, value: cityData.population });
+        }
+
+        // Esperar a que todas las promesas se resuelvan antes de dibujar el gráfico
+        drawPopulationChart(populationData);
+        openModal();
+    });
+
+    closeModalBtn.addEventListener('click', closeModal);
 });
+
+// Llamamos a drawPopulationChart con un conjunto de datos vacío
+drawPopulationChart([]);
+
 
 async function fetchCityData(city) {
     // Fetching city data from an API
@@ -73,7 +95,7 @@ async function getCityImage(cityName) {
 async function displayCityData(cityName) {
     try {
         const cityData = await fetchCityData(cityName);
-        const cityImage = await getCityImage(cityName)
+        const cityImage = await getCityImage(cityName);
 
         // Displaying selected data on the HTML
         document.getElementById('city-name').textContent = cityData.name;
@@ -95,4 +117,54 @@ async function displayCityData(cityName) {
     }
 }
 
+function openModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+}
+
 displayCityData(currentCityIndex);
+
+// Draw Population Chart
+function drawPopulationChart(populationData) {
+    const ctx = document.getElementById('populationChart').getContext('2d');
+    // Destruye el gráfico existente antes de crear uno nuevo
+    if (populationChart) {
+        populationChart.destroy();
+    }
+    ctx.canvas.width = 300;
+    ctx.canvas.height = 300;
+    // Ajusta el tamaño del gráfico usando las opciones
+    populationChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: populationData.map(city => city.label),
+            datasets: [{
+                data: populationData.map(city => city.value),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                ],
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Population Comparison'
+            },
+            responsive: true,
+        }
+    });
+}
