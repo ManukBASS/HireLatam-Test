@@ -1,13 +1,29 @@
+// ELEMENTS
 const prevCityBtn = document.getElementById('prev-city-btn');
 const nextCityBtn = document.getElementById('next-city-btn');
 const openModalBtn = document.getElementById('openModalBtn');
 const closeModalBtn = document.getElementById('closeModal');
+const addCityBtn = document.getElementById('addCityBtn');
+const errorSpan = document.getElementById('errorSpan');
 
-const cities = ['Mount Vernon', 'Birmingham', 'Houston', 'Miami', 'Springfield', 'Seattle', 'Concord', 'New Bedford', 'Minneapolis', 'Loveland'];
+const cities = ['Birmingham', 'Mount Vernon', 'Houston', 'Miami', 'Springfield', 'Seattle', 'Concord', 'New Bedford', 'Minneapolis', 'Loveland'];
+
+// Scripts
 
 let currentCityIndex = 0;
 let populationChart;
 
+function openModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+}
+
+// DOM Events
 document.addEventListener('DOMContentLoaded', () => {
     // Calling displayCityData after the DOM is completely loaded
     displayCityData(cities[currentCityIndex]);
@@ -25,23 +41,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     openModalBtn.addEventListener('click', async () => {
-        // Al hacer clic, primero se obtienen los datos de población y luego se dibuja el gráfico
+        // Gets population data on click and draws the chart
         const populationData = [];
         for (const city of cities) {
             const cityData = await fetchCityData(city);
             populationData.push({ label: city, value: cityData.population });
         }
 
-        // Esperar a que todas las promesas se resuelvan antes de dibujar el gráfico
+        // Wait for promises to fullfil before drawing the chart
         drawPopulationChart(populationData);
         openModal();
     });
 
     closeModalBtn.addEventListener('click', closeModal);
+
+    addCityBtn.addEventListener('click', addNewCity);
 });
 
-// Llamamos a drawPopulationChart con un conjunto de datos vacío
+// Calling drawPopulationChart as an empty object
 drawPopulationChart([]);
+
+async function addNewCity() {
+    // Obtain input value
+    const newCityInput = document.getElementById('newCityInput');
+    const errorSpan = document.getElementById('errorSpan');
+    let newCityName = newCityInput.value.trim();
+    errorSpan.textContent = '';
+
+    // Capitalizes new city name
+    newCityName = newCityName.replace(/\b\w/g, c => c.toUpperCase());
+
+    // Verify if city name is valid
+    if (newCityName !== '') {
+        try {
+            // Intenta obtener datos de la ciudad
+            const cityData = await fetchCityData(newCityName);
+
+            // Add new city to the array
+            cities.push(newCityName);
+
+            // Updates Population chart with the new city
+            displayCityData(newCityName);
+            updatePopulationChart();
+
+            // Cleans error message
+            errorSpan.textContent = '';
+        } catch (error) {
+            console.error(`Error adding new city ${newCityName}:`, error);
+
+            // Shows message on error
+            errorSpan.textContent = 'Error: City not found. Please enter a valid city name.';
+            errorSpan.style.color = 'red';
+        }
+    } else {
+        // Error message if input is empty
+        errorSpan.textContent = 'Error: Please enter a valid city name.';
+        errorSpan.style.color = 'red';
+    }
+}
+
+function updatePopulationChart() {
+    // Gets updated population data on click and draws the chart
+    const populationData = cities.map(async city => {
+        const cityData = await fetchCityData(city);
+        return { label: city, value: cityData.population };
+    });
+
+    // Wait for promises to fullfil before drawing the chart
+    Promise.all(populationData).then(data => {
+        drawPopulationChart(data);
+    });
+}
 
 
 async function fetchCityData(city) {
@@ -66,7 +136,7 @@ async function fetchCityData(city) {
             age: cityData.median_age,
         };
     } else {
-        throw new Error(`No se encontraron datos para la ciudad: ${city}`);
+        throw new Error(`City not found`);
     }
 }
 
@@ -117,28 +187,16 @@ async function displayCityData(cityName) {
     }
 }
 
-function openModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'block';
-}
-
-function closeModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'none';
-}
-
 displayCityData(currentCityIndex);
 
 // Draw Population Chart
 function drawPopulationChart(populationData) {
     const ctx = document.getElementById('populationChart').getContext('2d');
-    // Destruye el gráfico existente antes de crear uno nuevo
+    // Destroys previous chart and creates a new one
     if (populationChart) {
         populationChart.destroy();
     }
-    ctx.canvas.width = 300;
-    ctx.canvas.height = 300;
-    // Ajusta el tamaño del gráfico usando las opciones
+
     populationChart = new Chart(ctx, {
         type: 'doughnut',
         data: {

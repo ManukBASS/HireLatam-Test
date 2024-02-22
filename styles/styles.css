@@ -12,6 +12,33 @@ main {
     margin: 0 auto;
     width: 90%;
     max-width: 800px;
+
+    input {
+        width: 10rem;
+        border: .5px solid #333;
+        border-radius: .5rem;
+        padding: .5rem
+    }
+
+    button {
+        width: 10rem;
+        height: 2rem;
+        border: .5px solid #333;
+        border-radius: .5rem;
+        transition: .2s ease;
+    }
+
+    button:hover {
+        cursor: pointer;
+        color: #fff;
+        background-color: #333;
+        transition: .2s ease;
+        -webkit-transition: .2s ease;
+        -moz-transition: .2s ease;
+        -ms-transition: .2s ease;
+        -o-transition: .2s ease;
+    }
+
 }
 
 section {
@@ -38,34 +65,21 @@ section {
     display: flex;
     gap: 1rem;
 
-    button {
-        width: 10rem;
-        height: 2rem;
-        border: .5px solid #333;
-        border-radius: .5rem;
-        transition: .2s ease;
-        -webkit-border-radius: .5rem;
-        -moz-border-radius: .5rem;
-        -ms-border-radius: .5rem;
-        -o-border-radius: .5rem;
-    }
 
-    button:hover {
-        cursor: pointer;
-        color: #fff;
-        background-color: #333;
-        transition: .2s ease;
-        -webkit-transition: .2s ease;
-        -moz-transition: .2s ease;
-        -ms-transition: .2s ease;
-        -o-transition: .2s ease;
-    }
 }
 
 #myModal .modal-content {
     width: 300px;
     max-width: 100%;
     padding: 1rem;
+}
+
+#addCitySection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
 canvas {
