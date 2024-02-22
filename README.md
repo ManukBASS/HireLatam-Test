@@ -1,10 +1,13 @@
 # Hire Latam: City Data Summarization 🌇
 
-This web project allows users to explore and compare demographic data for various cities in the United States. It utilizes the OpenDataSoft API to retrieve information on population, veterans, and median age.
+This web project allows users to explore and compare demographic data for various cities in the United States. It utilizes the OpenDataSoft API to retrieve information on population, veterans, and median age, and uses the Unsplash API to fetch images that match the corresponding city.
+This project uses Chart.Js to create a doughnut shaped chart that compares the population of all the cities.
 
 ## Features
 
 - **City Data Visualization:** Displays detailed information about the population, number of veterans, and median age of the currently selected city.
+
+- **Image Display:** This project fetches images that match each individual city. It changes every time, so feel free to explore multiple images !
 
 - **Population Comparison:** Enables users to compare the population of all cities using a doughnut chart.
 
@@ -31,19 +34,11 @@ This web project allows users to explore and compare demographic data for variou
 
 - **`styles/modalStyles.css`:** Specific styles for the population comparison modal.
 
-- **`js/scripts.js`:** Main logic of the application, including functions for adding cities, fetching demographic data, and handling events.
+- **`js/scripts.js`:** Main logic of the application, including functions for adding cities, error and event handling, fetching demographic data and chart creation.
 
 - **`README.md`:** This file, providing information about the project.
 
-## Contributions
-
-Feel free to contribute to this project. You can open issues or pull requests to enhance functionality, fix bugs, or add new features.
-
 ## Credits
 
-This project uses the OpenDataSoft API to retrieve demographic data for cities.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project uses the OpenDataSoft API to retrieve demographic data for cities, the Unsplash API for image fetching and Chart.Js to create comparision charts.
 
